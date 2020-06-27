@@ -1,26 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Container } from 'react-bootstrap';
+import Dropzone from 'react-dropzone'
+import Papa from 'papaparse';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+
+  onFileDrop(files: File[]) {
+    // console.log(files);
+
+    Papa.parse(files[0], {
+      complete: (data: any) => {
+        console.log(data);
+      }
+    });
+  }
+
+  render() {
+    return (
+      <Container>
+        <Dropzone onDrop={this.onFileDrop}>
+          {({getRootProps, getInputProps}) => (
+            <section className={"border bg-light text-center"}>
+              <div {...getRootProps()}>
+                <input {...getInputProps()} />
+                <p>Drag 'n' drop some files here, or click to select files</p>
+              </div>
+            </section>
+          )}
+        </Dropzone>
+      </Container>
+    );
+  }
 }
 
 export default App;
